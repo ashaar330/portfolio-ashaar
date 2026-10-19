@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ashaar • young astronomer</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter','Space Grotesk',sans-serif;background:radial-gradient(circle at center, #0a1128 0%, #03050a 100%);color:#f0f4ff;line-height:1.5;overflow-x:hidden;position:relative;min-height:100vh;}
+canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none;}
+.content{position:relative;z-index:10;max-width:1200px;margin:0 auto;padding:2rem;}
+.glass{background:rgba(10,20,40,0.6);backdrop-filter:blur(12px);border:1px solid rgba(70,140,255,0.3);border-radius:3rem;padding:2.5rem 3rem;box-shadow:0 20px 40px rgba(0,0,0,0.8);}
+h1{font-size:4.5rem;font-weight:700;background:linear-gradient(130deg,#fff,#b0d4ff);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;}
+.subtitle{font-size:1.6rem;color:#c0dcff;margin:0.5rem 0 1.5rem 0;border-left:4px solid #3f8aff;padding-left:1.5rem;}
+p{color:#d0e2ff;font-size:1.1rem;margin-bottom:1rem;}
+.tagline{font-size:1.4rem;color:#7db9ff;height:2rem;margin-bottom:1rem;}
+.stats{display:flex;flex-wrap:wrap;justify-content:space-around;background:rgba(0,10,30,0.5);border-radius:3rem;padding:1.5rem;margin:2rem 0;border:1px solid #2e5580;}
+.stat{text-align:center;}
+.stat-num{font-size:3rem;font-weight:700;color:#aac9ff;}
+.stat-lbl{font-size:1rem;color:#8ca8cc;text-transform:uppercase;letter-spacing:1px;}
+h2{font-size:2.2rem;color:#e2efff;margin:3rem 0 1.5rem 0;display:flex;align-items:center;gap:10px;}
+h2 i{color:#4895ff;background:rgba(30,70,140,0.5);padding:0.6rem;border-radius:50%;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;margin-bottom:2rem;}
+.card{background:rgba(15,25,45,0.7);backdrop-filter:blur(8px);border:1px solid rgba(60,140,255,0.25);border-radius:2rem;padding:2rem;transition:transform 0.3s, border-color 0.3s;}
+.card:hover{transform:translateY(-5px);border-color:#6aa9ff;}
+.card i{font-size:2.5rem;color:#7db9ff;margin-bottom:1rem;}
+.card h3{font-size:1.4rem;margin-bottom:0.5rem;color:#fff;}
+.card p{font-size:1rem;margin-bottom:1rem;}
+.tags span{display:inline-block;background:rgba(0,60,130,0.4);border-radius:50px;padding:0.3rem 1rem;font-size:0.8rem;border:1px solid #3f7bcb;color:#c3ddff;margin-right:0.5rem;margin-top:0.5rem;}
+.btn-panel{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin:2rem 0;}
+.btn{background:rgba(20,40,70,0.8);border:2px solid #3f7bcb;color:#e0f0ff;padding:0.8rem 2rem;border-radius:50px;font-size:1.1rem;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:8px;font-weight:500;}
+.btn:hover{background:#2f5faa;border-color:#aac9ff;transform:scale(1.05);}
+.btn-basket{background:linear-gradient(145deg,#e67e22,#d35400);border-color:#f39c12;}
+.btn-flower{background:linear-gradient(145deg,#2ecc71,#27ae60);border-color:#2ecc71;}
+.fact-box{background:rgba(0,0,0,0.6);border-radius:2rem;padding:1.5rem;margin:1.5rem 0;border-left:6px solid #5f9eff;font-size:1.2rem;text-align:center;min-height:80px;display:flex;align-items:center;justify-content:center;}
+</style>
+</head>
+<body>
+<canvas id="bgCanvas"></canvas>
+
+<div class="content">
+  <div class="glass">
+    <h1>Ashaar</h1>
+    <div class="subtitle">astrophysics • astronomy • code</div>
+    <div id="typewriter" class="tagline"></div>
+    <p>I'm Ashaar, a young space lover. I started watching the stars 2 years ago, and now I'm learning to code to explore the universe even more.</p>
+  </div>
+
+  <div class="btn-panel">
+    <button class="btn" id="factBtn"><i class="fa-regular fa-star"></i> space fact</button>
+    <button class="btn" id="colorBtn"><i class="fa-regular fa-palette"></i> change colors</button>
+    <button class="btn" id="resetBtn"><i class="fa-regular fa-rotate-right"></i> reset</button>
+    <button class="btn btn-basket" id="basketBtn"><i class="fa-solid fa-basketball"></i> slam dunk!</button>
+    <button class="btn btn-flower" id="flowerBtn"><i class="fa-solid fa-seedling"></i> bloom flowers</button>
+    <button class="btn" style="background:linear-gradient(145deg,#27ae60,#1e8449); border-color:#2ecc71;" id="snakeBtn"><i class="fa-solid fa-leaf"></i> green snake!</button>
+  </div>
+
+  <div id="factDisplay" class="fact-box">✦ click a button to explore ✦</div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num" data-target="2">0</div><div class="stat-lbl">years looking up</div></div>
+    <div class="stat"><div class="stat-num" data-target="10">0</div><div class="stat-lbl">nebulae visited</div></div>
+    <div class="stat"><div class="stat-num" data-target="3">0</div><div class="stat-lbl">tools built</div></div>
+    <div class="stat"><div class="stat-num" data-target="1">0</div><div class="stat-lbl">papers</div></div>
+  </div>
+
+  <h2><i class="fa-regular fa-star"></i> what i love</h2>
+  <div class="grid">
+    <div class="card"><i class="fa-regular fa-sun"></i><h3>Astrophysics</h3><p>How stars are born and how black holes work. I use math and physics to understand the cosmos.</p><div class="tags"><span>gravity</span><span>stars</span></div></div>
+    <div class="card"><i class="fa-regular fa-moon"></i><h3>Astronomy</h3><p>Looking through telescopes, capturing light from far away galaxies. I love observing nights.</p><div class="tags"><span>telescopes</span><span>photons</span></div></div>
+    <div class="card"><i class="fa-regular fa-microchip"></i><h3>Computer Science</h3><p>Writing code to simulate space, process images, and find patterns in data. I love creating websites.</p><div class="tags"><span>coding</span><span>simulation</span></div></div>
+    
+    <!-- CASE SERPENTS VERTS -->
+    <div class="card" style="border-color:#2ecc71;">
+      <i class="fa-solid fa-leaf" style="color:#2ecc71;"></i>
+      <h3>Animals & Nature</h3>
+      <p>I love all animals, but I have a special passion for little green snakes! 🐍 They are so cute.</p>
+      <div class="tags"><span style="border-color:#2ecc71;color:#a3e4d7;">green snakes</span><span style="border-color:#2ecc71;color:#a3e4d7;">wildlife</span></div>
+    </div>
+  </div>
+
+  <h2><i class="fa-regular fa-code"></i> things i built</h2>
+  <div class="grid">
+    <div class="card"><i class="fa-regular fa-satellite"></i><h3>Star classifier</h3><p>My tool that looks at starlight and tells what type of star it is. 94% accurate.</p><div class="tags"><span>starlight</span><span>space</span></div><button class="btn" style="margin-top:1rem;font-size:0.9rem;padding:0.5rem 1.5rem;" onclick="alert('🌟 It uses data to classify stars!')">learn more</button></div>
+    <div class="card"><i class="fa-regular fa-globe"></i><h3>Exoplanet simulator</h3><p>Watch planets orbit other stars in real time. Made with my own code.</p><div class="tags"><span>planets</span><span>orbit</span></div><button class="btn" style="margin-top:1rem;font-size:0.9rem;padding:0.5rem 1.5rem;" onclick="alert('🪐 You can see gravity in action!')">learn more</button></div>
+    <div class="card"><i class="fa-regular fa-camera"></i><h3>Nebula photo tool</h3><p>Makes astro photos sharper. Used by over 50 people.</p><div class="tags"><span>photos</span><span>space</span></div><button class="btn" style="margin-top:1rem;font-size:0.9rem;padding:0.5rem 1.5rem;" onclick="alert('📸 It removes noise and stacks images!')">learn more</button></div>
+  </div>
+</div>
+
+<script>
+// --- CONFIGURATION DU CANVAS ---
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+window.addEventListener('resize', resize); resize();
+
+// Variables globales
+let stars = [], flowers = [], basketballs = [], leaves = [], snakes = [], shootingStars = [], planets = [];
+
+// --- INITIALISATION ---
+function init() {
+  stars = []; leaves = []; flowers = []; planets = [];
+  // Étoiles
+  for (let i = 0; i < 200; i++) stars.push({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.5, alpha: Math.random(), speed: 0.01 + Math.random() * 0.02 });
+  // Feuilles
+  for (let i = 0; i < 20; i++) leaves.push({ x: Math.random() * W, y: Math.random() * H, s: 5 + Math.random() * 10, vx: -0.5 + Math.random(), vy: 0.5 + Math.random(), rot: Math.random() * 6, rSpeed: -0.02 + Math.random() * 0.04 });
+  // Fleurs de fond
+  for (let i = 0; i < 10; i++) flowers.push({ x: Math.random() * W, y: H - 10 - Math.random() * 40, s: 10 + Math.random() * 15, color: `hsl(${Math.random()*360}, 80%, 60%)` });
+  // Planètes 2D
+  for (let i = 1; i <= 4; i++) {
+    planets.push({ distance: i * 70, speed: 0.01 / i, angle: Math.random() * Math.PI * 2, size: 10 + (4 - i) * 3, color: `hsl(${i * 70}, 80%, 60%)` });
+  }
+}
+init();
+
+// --- FONCTIONS DE DESSIN ---
+function drawStar(s) {
+  s.alpha += s.speed;
+  if (s.alpha > 1 || s.alpha < 0.2) s.speed *= -1;
+  ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
+  ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fill();
+}
+
+function drawLeaf(l) {
+  l.x += l.vx; l.y += l.vy; l.rot += l.rSpeed;
+  if (l.y > H + 20) { l.y = -20; l.x = Math.random() * W; }
+  if (l.x > W + 20) l.x = -20; if (l.x < -20) l.x = W + 20;
+  ctx.save(); ctx.translate(l.x, l.y); ctx.rotate(l.rot);
+  ctx.fillStyle = `hsl(120, 60%, 40%)`;
+  ctx.beginPath(); ctx.ellipse(0, 0, l.s, l.s * 0.5, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.restore();
+}
+
+function drawFlower(f) {
+  ctx.save(); ctx.translate(f.x, f.y);
+  ctx.strokeStyle = '#2e7d32'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, 15); ctx.stroke();
+  ctx.fillStyle = f.color;
+  for (let i = 0; i < 5; i++) {
+    let a = (i / 5) * Math.PI * 2;
+    ctx.beginPath(); ctx.arc(Math.cos(a) * f.s * 0.5, Math.sin(a) * f.s * 0.5 - 5, f.s * 0.4, 0, Math.PI * 2); ctx.fill();
+  }
+  ctx.fillStyle = '#f1c40f';
+  ctx.beginPath(); ctx.arc(0, -5, f.s * 0.3, 0, Math.PI * 2); ctx.fill();
+  ctx.restore();
+}
+
+function drawBasketball(b) {
+  b.vy += 0.4; b.y += b.vy; b.x += b.vx; b.rot += b.vx * 0.05;
+  if (b.y + b.s > H) { b.y = H - b.s; b.vy *= -0.7; if (Math.abs(b.vy) < 1) b.vy = 0; }
+  if (b.x - b.s < 0) { b.x = b.s; b.vx *= -0.8; }
+  if (b.x + b.s > W) { b.x = W - b.s; b.vx *= -0.8; }
+  ctx.save(); ctx.translate(b.x, b.y); ctx.rotate(b.rot);
+  ctx.fillStyle = '#e67e22'; ctx.beginPath(); ctx.arc(0, 0, b.s, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = '#333'; ctx.lineWidth = b.s * 0.1;
+  ctx.beginPath(); ctx.moveTo(-b.s, 0); ctx.lineTo(b.s, 0); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, -b.s); ctx.lineTo(0, b.s); ctx.stroke();
+  ctx.restore();
+}
+
+function drawSnake(s) {
+  s.time += 0.05;
+  ctx.save(); ctx.translate(s.x, s.y);
+  ctx.fillStyle = '#2ecc71'; ctx.strokeStyle = '#1e8449'; ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(-20, 0);
+  ctx.bezierCurveTo(-10, Math.sin(s.time)*10, 10, -Math.cos(s.time)*10, 20, 0);
+  ctx.lineWidth = 6; ctx.strokeStyle = '#2ecc71'; ctx.stroke();
+  ctx.beginPath(); ctx.arc(22, 0, 5, 0, Math.PI * 2); ctx.fillStyle = '#2ecc71'; ctx.fill();
+  ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(23, -2, 1.5, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(23, 2, 1.5, 0, Math.PI * 2); ctx.fill();
+  ctx.restore();
+}
+
+// --- BOUCLE D'ANIMATION ---
+function animate() {
+  requestAnimationFrame(animate);
+  ctx.clearRect(0, 0, W, H);
+
+  // 1. ÉTOILES
+  stars.forEach(drawStar);
+
+  // 2. SYSTÈME SOLAIRE 2D
+  const centerX = W / 2;
+  const centerY = H / 2;
+  
+  // Orbites
+  ctx.strokeStyle = "rgba(68, 136, 255, 0.2)"; 
+  ctx.lineWidth = 1;
+  planets.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, p.distance, 0, Math.PI * 2);
+    ctx.stroke();
+  });
+
+  // Soleil
+  ctx.fillStyle = "#ffaa33";
+  ctx.shadowBlur = 40;
+  ctx.shadowColor = "#ff5500";
+  ctx.beginPath();
+  ctx.arc(centerX, centerY, 30, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.shadowBlur = 0; 
+
+  // Planètes
+  planets.forEach(p => {
+    p.angle += p.speed; 
+    const x = centerX + Math.cos(p.angle) * p.distance;
+    const y = centerY + Math.sin(p.angle) * p.distance;
+    
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.arc(x, y, p.size, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
+  // 3. FEUILLES, FLEURS, BALLONS, SERPENTS
+  leaves.forEach(drawLeaf);
+  flowers.forEach(drawFlower);
+  basketballs.forEach(drawBasketball);
+  snakes.forEach(drawSnake);
+
+  // Nettoyage des ballons hors écran
+  basketballs = basketballs.filter(b => b.y < H + 200);
+
+  // 4. ÉTOILES FILANTES
+  shootingStars.forEach((star, index) => {
+    star.x += Math.cos(star.angle) * star.speed;
+    star.y += Math.sin(star.angle) * star.speed;
+    star.alpha -= 0.01;
+
+    if (star.alpha <= 0 || star.y > H) {
+      shootingStars.splice(index, 1);
+      return;
+    }
+
+    ctx.beginPath();
+    ctx.moveTo(star.x, star.y);
+    ctx.lineTo(star.x - Math.cos(star.angle) * star.len, star.y - Math.sin(star.angle) * star.len);
+    ctx.strokeStyle = `rgba(255, 255, 255, ${star.alpha})`;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  });
+}
+animate();
+
+// --- INTERACTIONS DES BOUTONS ---
+const factDisplay = document.getElementById('factDisplay');
+const facts = [
+  "🌌 There are more stars in the universe than grains of sand on Earth.",
+  "🪐 A day on Venus is longer than a year on Venus.",
+  "🌠 Neutron stars can spin 600 times per second!",
+  "☀️ The Sun makes up 99.86% of our solar system's mass.",
+  "🔭 The Hubble telescope can see objects 13.4 billion light-years away.",
+  "🐍 Green snakes are incredibly beautiful and help nature!"
+];
+
+document.getElementById('factBtn').addEventListener('click', () => {
+  factDisplay.innerHTML = `✦ ${facts[Math.floor(Math.random() * facts.length)]} ✦`;
+});
+
+document.getElementById('colorBtn').addEventListener('click', () => {
+  stars.forEach(s => s.alpha = Math.random());
+  flowers.forEach(f => f.color = `hsl(${Math.random()*360}, 80%, 60%)`);
+  planets.forEach(p => p.color = `hsl(${Math.random()*360}, 80%, 60%)`);
+  factDisplay.innerHTML = '✦ colors changed! ✦';
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  basketballs = []; snakes = []; shootingStars = [];
+  init(); // Réinitialise les étoiles, fleurs, planètes
+  factDisplay.innerHTML = '✦ back to normal ✦';
+});
+
+document.getElementById('basketBtn').addEventListener('click', () => {
+  for (let i = 0; i < 5; i++) {
+    basketballs.push({
+      x: W / 2 + (Math.random() - 0.5) * 100,
+      y: H / 2 - 100,
+      s: 20 + Math.random() * 15,
+      vx: (Math.random() - 0.5) * 15,
+      vy: -5 - Math.random() * 10,
+      rot: 0
+    });
+  }
+  factDisplay.innerHTML = '🏀 Slam dunk! 🏀';
+});
+
+document.getElementById('flowerBtn').addEventListener('click', () => {
+  for (let i = 0; i < 8; i++) {
+    flowers.push({
+      x: Math.random() * W,
+      y: H - 10 - Math.random() * 20,
+      s: 15 + Math.random() * 20,
+      color: `hsl(${Math.random()*360}, 80%, 60%)`
+    });
+  }
+  factDisplay.innerHTML = '🌸 Flowers are blooming! 🌸';
+});
+
+document.getElementById('snakeBtn').addEventListener('click', () => {
+  for (let i = 0; i < 5; i++) {
+    snakes.push({
+      x: Math.random() * W,
+      y: H - 50 - Math.random() * 100,
+      time: Math.random() * 10
+    });
+  }
+  factDisplay.innerHTML = '🐍 Look at the cute little green snakes! 🐍';
+});
+
+// --- COMPTEURS ANIMÉS ---
+const nums = document.querySelectorAll('.stat-num');
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const el = e.target; const target = +el.dataset.target;
+      let cur = 0; const inc = target / 30;
+      const upd = () => { cur += inc; if (cur < target) { el.innerText = Math.floor(cur); requestAnimationFrame(upd); } else el.innerText = target; };
+      upd(); obs.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+nums.forEach(n => obs.observe(n));
+
+// --- EFFET MACHINE À ÉCRIRE ---
+const phrases = ["learning about galaxies", "first telescope", "coding space stuff", "hunting nebulae", "loving green snakes"];
+let pIdx = 0, cIdx = 0;
+const tw = document.getElementById('typewriter');
+function type() {
+  if (cIdx < phrases[pIdx].length) { tw.textContent += phrases[pIdx].charAt(cIdx); cIdx++; setTimeout(type, 80); }
+  else setTimeout(erase, 2000);
+}
+function erase() {
+  if (tw.textContent.length > 0) { tw.textContent = tw.textContent.slice(0, -1); setTimeout(erase, 40); }
+  else { pIdx = (pIdx + 1) % phrases.length; cIdx = 0; setTimeout(type, 200); }
+}
+setTimeout(type, 500);
+</script>
+</body>
+</html>
